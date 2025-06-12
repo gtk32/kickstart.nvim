@@ -88,6 +88,19 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Show Diagnostic' })
+
+-- Comment and uncomment lines
+vim.keymap.set('n', '<C-_>', function()
+  require('Comment.api').toggle.linewise.current()
+end, { noremap = true, silent = true, desc = 'Toggle comment (linewise)' })
+
+vim.keymap.set('v', '<C-_>', function()
+  -- Toggle linewise comment for visual selection
+  local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+  vim.api.nvim_feedkeys(esc, 'nx', false)
+  require('Comment.api').toggle.linewise(vim.fn.visualmode())
+end, { noremap = true, silent = true, desc = 'Toggle comment (visual)' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -850,7 +863,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'yaml' },
+      ensure_installed = { 'bash', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'yaml' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -881,9 +894,9 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
