@@ -87,8 +87,10 @@ vim.o.confirm = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Show Diagnostic' })
+vim.keymap.set('n', '<leader>q', function()
+  vim.diagnostic.setloclist()
+  vim.cmd 'lopen 8'
+end, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Comment and uncomment lines
 vim.keymap.set('n', '<C-_>', function()
